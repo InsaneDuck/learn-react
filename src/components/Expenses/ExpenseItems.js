@@ -44,7 +44,7 @@ export const FilterExpenses = (props) => {
     const [selectedYear, setSelectedYear] = useState("");
     const yearChangeHandler = (event) => {
         setSelectedYear(event.target.value);
-        props.onChangingYear(selectedYear);
+        props.onChangingYear(event.target.value);
     };
     return (
         <div>

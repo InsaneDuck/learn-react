@@ -32,11 +32,8 @@ const App = () => {
     }
 
     let filterYearHandler = (year) => {
-        setExpenses(expenses.filter(expense => {
-            console.log(expense.date.getFullYear());
-            console.log(year)
-            return expense.date.getFullYear().toString() === year
-        }))
+        setExpenses(expenses.filter(expense =>
+            expense.date.getFullYear().toString() === year))
     };
 
     return (
