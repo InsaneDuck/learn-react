@@ -1,13 +1,27 @@
 import './ExpenseItems.css'
 import {Card} from "../UI/Card";
 import {useState} from "react";
+import {ExpensesChart} from "./ExpensesChart";
 
 export const ExpenseItems = (props) => {
-    const expenses = props.expenses;
+    const initialExpenses = props.expenses;
+    const years = [...new Set(initialExpenses.map(expense => expense.date.getFullYear()))]
+    const [filterYear, setFilterYear] = useState("No Filter");
+
+    let filteredExpenses = initialExpenses;
+    if (filterYear !== "No Filter") {
+        filteredExpenses = initialExpenses.filter(expense => expense.date.getFullYear().toString() === filterYear);
+    }
+    const filterYearHandler = (year) => {
+        console.log(year)
+        setFilterYear(year)
+    };
+
     return (
         <Card className="expenses">
-            {expenses.map((expense) =>
-                <ExpenseItem key={expense.id} expense={expense}/>)}
+            <FilterExpenses years={years} onChangingYear={filterYearHandler}/>
+            <ExpensesChart expenses={filteredExpenses}/>
+            {filteredExpenses.map(expense => <ExpenseItem key={expense.id} expense={expense}/>)}
         </Card>
     )
 }
@@ -40,17 +54,25 @@ export const ExpenseDate = (props) => {
 }
 
 export const FilterExpenses = (props) => {
-    const years = ["2018", "2019", "2020", "2021", "2022"];
-    const [selectedYear, setSelectedYear] = useState("");
+    const years = props.years;
     const yearChangeHandler = (event) => {
-        setSelectedYear(event.target.value);
         props.onChangingYear(event.target.value);
     };
+
+    function resetFilterHandler() {
+        props.onChangingYear("No Filter")
+    }
+
     return (
-        <div>
-            <select onChange={yearChangeHandler}>
-                {years.map(year => <option key={year} value={year}>{year}</option>)}
-            </select>
+        <div className="expenses-filter">
+            <div className="expenses-filter__control">
+                <label>Filter by Year</label>
+                <select onChange={yearChangeHandler}>
+                    <option key={0} value={null}>No Filter</option>
+                    {years.map(year => <option key={year} value={year}>{year}</option>)}
+                </select>
+                <button onClick={resetFilterHandler}>Reset</button>
+            </div>
         </div>
     );
 }

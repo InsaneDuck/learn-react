@@ -1,4 +1,4 @@
-import {ExpenseItems, FilterExpenses} from "./components/Expenses/ExpenseItems";
+import {ExpenseItems} from "./components/Expenses/ExpenseItems";
 import {NewExpense} from "./components/Expenses/AddExpense";
 import {useState} from "react";
 
@@ -11,7 +11,12 @@ const App = () => {
             amount: 94.12,
             date: new Date(2020, 7, 14),
         },
-        {id: 'e2', title: 'New TV', amount: 799.49, date: new Date(2021, 2, 12)},
+        {
+            id: 'e2',
+            title: 'New TV',
+            amount: 799.49,
+            date: new Date(2021, 2, 12)
+        },
         {
             id: 'e3',
             title: 'Car Insurance',
@@ -27,19 +32,17 @@ const App = () => {
     ])
 
     const addExpenseHandler = (expense) => {
-        setExpenses([...expenses, expense]);
+        setExpenses([expense, ...expenses])
+        // setExpenses(previousExpenses => {
+        //     return [expense, ...previousExpenses]
+        // });
         console.log(expenses);
     }
 
-    let filterYearHandler = (year) => {
-        setExpenses(expenses.filter(expense =>
-            expense.date.getFullYear().toString() === year))
-    };
 
     return (
         <div>
             <NewExpense onAddExpense={addExpenseHandler}/>
-            <FilterExpenses onChangingYear={filterYearHandler}/>
             <ExpenseItems expenses={expenses}/>
         </div>
     );

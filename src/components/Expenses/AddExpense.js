@@ -21,9 +21,9 @@ export const AddExpenseForm = (props) => {
     const [amount, getEnteredAmount] = useState("");
     const [date, getEnteredDate] = useState("");
 
+
     const titleChangeHandler = (event) => {
         getEnteredTitle(event.target.value);
-        console.log(title)
     };
 
     const amountChangeHandler = (event) => {
@@ -50,7 +50,17 @@ export const AddExpenseForm = (props) => {
         props.onSaveExpenseData(expenseData);
     };
 
-    return (
+    const [formState, setFormState] = useState(false);
+
+    const closeFormHandler = () => {
+        setFormState(false)
+    };
+
+    const showFormHandler = () => {
+        setFormState(true)
+    };
+
+    const form = (
         <form onSubmit={submitHandler}>
             <div className="new-expense__controls">
                 <div className="new-expense__control">
@@ -66,10 +76,19 @@ export const AddExpenseForm = (props) => {
                     <input type="date" value={date} onChange={dateChangeHandler}/>
                 </div>
                 <div className="new-expense__actions">
+                    <button onClick={closeFormHandler}>Cancel</button>
                     <button type="submit">Submit</button>
                 </div>
             </div>
         </form>
     );
+    
+    const showFormButton = (
+        <div>
+            <button onClick={showFormHandler}>Add Expense</button>
+        </div>
+    );
+
+    return formState ? form : showFormButton;
 }
 
